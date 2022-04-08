@@ -1,3 +1,4 @@
+package asmjit-app defined-in "asmjit-app.stanza"
 package stz/asmjit defined-in "stz-asmjit.stanza"
 package stz/asmjit requires :
   ccfiles:
