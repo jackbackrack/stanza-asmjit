@@ -1,3 +1,7 @@
+foreign-package-params(conan) :
+  conan-build-dir: "{WORKDIR}/build"
+  conan-install-extra-args: ["--build" "missing"]
+
 package asmjit-app defined-in "asmjit-app.stanza"
 package stz/asmjit defined-in "stz-asmjit.stanza"
 package stz/asmjit requires :
@@ -5,17 +9,19 @@ package stz/asmjit requires :
     "{WORKDIR}/build/stz-asmjit.o"
   ccflags:
     on-platform:
-      os-x  : "-lasmjit -lc++"
-      linux : "-lasmjit -lstdc++"
+      os-x  : ("{CONAN-INCLUDES}" "-lc++")
+      linux : ("{CONAN-INCLUDES}" "-lstdc++")
+  foreign-packages(conan) :
+    "asmjit/cci.20221111"
 compile file "{WORKDIR}/build/stz-asmjit.o" from "stz-asmjit.cpp" :
-  "g++ -c -O3 {.}/stz-asmjit.cpp --std=c++11 -o {WORKDIR}/build/stz-asmjit.o"
+  "g++ -c -O3 {.}/stz-asmjit.cpp --std=c++11 -o {WORKDIR}/build/stz-asmjit.o {CONAN-INCLUDES}"
 package stz/zydis defined-in "stz-zydis.stanza"
 package stz/zydis requires :
   ccfiles:
     "{WORKDIR}/build/stz-zydis.o"
   ccflags:
     on-platform:
-      os-x  : "-lzydis -lc++"
-      linux : "-lzydis -lstdc++"
+      os-x  : ("-lzydis" "-lc++")
+      linux : ("-lzydis" "-lstdc++")
 compile file "{WORKDIR}/build/stz-zydis.o" from "stz-zydis.cpp" :
   "g++ -c -O3 {.}/stz-zydis.cpp --std=c++11 -o {WORKDIR}/build/stz-zydis.o"
